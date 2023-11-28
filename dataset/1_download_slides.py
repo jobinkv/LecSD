@@ -2,14 +2,13 @@ import json
 import os
 import requests
 from tqdm import tqdm
-# from ipdb import set_trace as st 
+from ipdb import set_trace as st 
 
 '''
 Run this file from this folder. 
 It will download slide images from internet and save the images as its unique ids.jpg
 These unique ids helps to map its coresponding annotations.
-The slide image url and is coresponding slide name are given in the files
-"datastructure_slide_urls.json, computerNetworks_slide_urls.json and optimization_slide_urls.json"
+The slide image url and is coresponding slide name are given in the file "slideLinks.json"
 The program will create a folder with name "slideImages" and save all the slide images in this folder.
 '''
 
@@ -31,12 +30,12 @@ def download_image(url, folderName, filename):
 def slide_downloader(urlfile):
     weblinks = open(urlfile,  encoding='utf-8')
     links = json.load(weblinks)
-    for item in tqdm(links):
+    for uniqId in tqdm(links):
+        item = links[uniqId]
+        # st()
         if item['slideUrl'][-3:]=='jpg':
             download_image(item['slideUrl'],'slideImages',item['slideName'])
     print(len(links))
 
-slide_downloader('datastructure_slide_urls.json')
-slide_downloader('computerNetworks_slide_urls.json')
-slide_downloader('optimization_slide_urls.json')
+slide_downloader('slideLinks.json')
 
